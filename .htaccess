@@ -1,0 +1,41 @@
+# ═══════════════════════════════════════════
+# .htaccess — LoveLens
+# Sécurité et configuration Apache
+# ═══════════════════════════════════════════
+
+# ─── Activation du moteur de réécriture ───
+Options -Indexes
+RewriteEngine On
+
+# ─── Bloquer l'accès direct aux dossiers sensibles ───
+# Personne ne peut accéder directement à config/, models/, controllers/, views/
+RewriteRule ^config/       - [F,L]
+RewriteRule ^models/       - [F,L]
+RewriteRule ^controllers/  - [F,L]
+RewriteRule ^views/        - [F,L]
+RewriteRule ^lib/          - [F,L]
+
+# ─── Bloquer l'accès aux fichiers sensibles ───
+# (syntaxe Apache 2.4 : "Require all denied" remplace "Order Allow,Deny" + "Deny from all")
+<FilesMatch "\.(env|sql|log|sh|bak|htpasswd)$">
+    Require all denied
+</FilesMatch>
+
+# ─── Bloquer l'accès aux fichiers de config directement ───
+<Files "database.php">
+    Require all denied
+</Files>
+
+# ─── Sécurité des en-têtes HTTP ───
+<IfModule mod_headers.c>
+    # Empêche le clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Empêche le sniffing de type MIME
+    Header always set X-Content-Type-Options "nosniff"
+    # Active la protection XSS du navigateur
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ─── Page d'erreur personnalisée ───
+ErrorDocument 403 /lovelens1/index.php?action=home
+ErrorDocument 404 /lovelens1/index.php?action=home

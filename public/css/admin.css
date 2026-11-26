@@ -1,0 +1,374 @@
+/* ═══════════════════════════════════════════
+   admin.css — LoveLens
+   Styles pour toutes les pages d'administration
+═══════════════════════════════════════════ */
+
+/* ─── Page wrapper ─── */
+.admin-page {
+  background: #F7F3EE;
+  min-height: calc(100vh - 80px);
+  padding: 2rem 0 5rem;
+}
+
+/* ─── En-tête ─── */
+.admin-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #C9C4BE;
+}
+
+.admin-header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 400;
+  color: #1C1C1C;
+  margin: 0;
+}
+
+.admin-header-sub {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7A7570;
+  margin-top: 0.3rem;
+}
+
+/* ─── Bouton nouvel album ─── */
+.btn-new-album {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.8rem;
+  background: #B89B6A;
+  color: white;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+.btn-new-album:hover { background: #8B7248; color: white; }
+
+/* ─── Compteur ─── */
+.admin-count {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7A7570;
+  margin-bottom: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   GRILLE CARTES ALBUMS
+═══════════════════════════════════════════ */
+.albums-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.album-card {
+  flex: 1 1 300px;
+  max-width: 380px;
+  background: white;
+  border: 1px solid #E8E3DC;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s;
+  position: relative;
+}
+.album-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+}
+
+/* ─── Image couverture ─── */
+.album-card-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.album-card-cover-placeholder {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #F7F3EE 0%, #C9C4BE 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #7A7570;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ─── Corps carte ─── */
+.album-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.album-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #1C1C1C;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+}
+
+.album-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+  flex: 1;
+}
+
+.album-card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  color: #7A7570;
+}
+
+/* ─── Badge code client ─── */
+.album-card-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #F7F3EE;
+  border: 1px solid #C9C4BE;
+  padding: 0.35rem 0.8rem;
+  color: #1C1C1C;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: fit-content;
+}
+.album-card-code:hover { background: #EDE8E1; }
+
+.album-card-code-copied {
+  font-size: 0.6rem;
+  color: #B89B6A;
+  display: none;
+  margin-left: 0.3rem;
+}
+
+/* ─── Actions ─── */
+.album-card-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #F0EBE4;
+}
+
+.btn-action {
+  flex: 1;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action-photos {
+  background: #1C1C1C;
+  color: white;
+}
+.btn-action-photos:hover { background: #2E2E2E; color: white; }
+
+.btn-action-edit {
+  background: transparent;
+  border: 1px solid #C9C4BE;
+  color: #7A7570;
+}
+.btn-action-edit:hover { border-color: #1C1C1C; color: #1C1C1C; }
+
+.btn-action-delete {
+  background: transparent;
+  border: 1px solid #F5C6C6;
+  color: #C0392B;
+  flex: 0 0 auto;
+  padding: 0.55rem 0.7rem;
+}
+.btn-action-delete:hover { background: #C0392B; color: white; border-color: #C0392B; }
+
+/* ─── État vide ─── */
+.albums-empty {
+  padding: 5rem 2rem;
+  text-align: center;
+  border: 1px dashed #C9C4BE;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  color: #7A7570;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════
+   FORMULAIRES ADMIN (album_form, etc.)
+═══════════════════════════════════════════ */
+.admin-form {
+  max-width: 640px;
+  background: white;
+  padding: 2.5rem;
+  border: 1px solid #E8E3DC;
+}
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.4rem;
+}
+
+.admin-form-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7A7570;
+  margin-bottom: 0.5rem;
+}
+
+.admin-form-input,
+.admin-form-select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  color: #1C1C1C;
+  background: #FDFAF7;
+  border: 1px solid #C9C4BE;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 0;
+  appearance: none;
+}
+.admin-form-input:focus,
+.admin-form-select:focus { border-color: #B89B6A; box-shadow: 0 0 0 3px rgba(184,155,106,0.12); }
+
+.admin-form-hint {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  color: #C9C4BE;
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+.btn-admin-submit {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.85rem 2.5rem;
+  background: #1C1C1C;
+  color: #F7F3EE;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 0;
+}
+.btn-admin-submit:hover { background: #B89B6A; }
+
+.btn-admin-cancel {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.8rem;
+  background: transparent;
+  border: 1px solid #C9C4BE;
+  color: #7A7570;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-admin-cancel:hover { border-color: #1C1C1C; color: #1C1C1C; }
+
+/* ═══════════════════════════════════════════
+   GESTION PHOTOS
+═══════════════════════════════════════════ */
+.photos-grid-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.photo-admin-item {
+  flex: 1 1 180px;
+  max-width: 220px;
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+  background: #E8E3DC;
+}
+
+.photo-admin-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s;
+}
+.photo-admin-item:hover img { opacity: 0.7; }
+
+.photo-admin-actions {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.photo-admin-item:hover .photo-admin-actions { opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE MD — < 768px
+═══════════════════════════════════════════ */
+@media (max-width: 767.98px) {
+  .album-card { max-width: 100%; }
+  .admin-header { flex-direction: column; align-items: flex-start; }
+  .admin-form { padding: 1.5rem; }
+}

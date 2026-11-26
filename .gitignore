@@ -1,0 +1,14 @@
+# Identifiants SMTP : à créer à partir de config/mail.example.php
+config/mail.php
+
+# Photos envoyées par l'administration (lourdes, et propres à chaque installation)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Fichier de test qui expose la configuration du serveur
+test.php
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
