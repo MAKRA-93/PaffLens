@@ -40,45 +40,29 @@ class Photo {
                   ->execute([':id' => $id]);
         return $photo['chemin_fichier'];  // Contrôleur appelle unlink()
     }
-}
 
-// Ajoute la commande deleteByAlbum pour supprimer toutes les photos d'un album donné
-public function deleteByAlbum(int $albumId): void {
-    $stmt = $this->pdo->prepare(
-        'SELECT chemin_fichier FROM photos WHERE id_album = :album_id'
-    );
-    $stmt->execute([':album_id' => $albumId]);
-    $photos = $stmt->fetchAll();
-    foreach ($photos as $photo) {
-        (new FileManager())->deleteFile($photo['chemin_fichier']);
+    // Ajoute la commande deleteByAlbum pour supprimer toutes les photos d'un album donné
+    public function deleteByAlbum(int $albumId): void {
+        $stmt = $this->pdo->prepare(
+            'SELECT chemin_fichier FROM photos WHERE id_album = :album_id'
+        );
+        $stmt->execute([':album_id' => $albumId]);
+        $photos = $stmt->fetchAll();
+        foreach ($photos as $photo) {
+            (new FileManager())->deleteFile($photo['chemin_fichier']);
+        }
+        $this->pdo->prepare('DELETE FROM photos WHERE id_album = :album_id')
+                  ->execute([':album_id' => $albumId]);
     }
-    $this->pdo->prepare('DELETE FROM photos WHERE id_album = :album_id')
-              ->execute([':album_id' => $albumId]);
+
+    // Ajouter la méthode Photo::countByAlbum(int $albumId): int dans Photo.php. Cette méthode retourne le nombre de photos de l'album via une requête COUNT(*) préparée PDO.
+
+    public function countByAlbum(int $albumId): int {
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) AS nb_photos FROM photos WHERE id_album = :album_id'
+        );
+        $stmt->execute([':album_id' => $albumId]);
+        $result = $stmt->fetch();
+        return (int) ($result['nb_photos'] ?? 0);
+    }
 }
-
-// Ajouter la méthode Photo::countByAlbum(int $albumId): int dans Photo.php. Cette méthode retourne le nombre de photos de l'album via une requête COUNT(*) préparée PDO.
-
-public function countByAlbum(int $albumId): int {
-    $stmt = $this->pdo->prepare(
-        'SELECT COUNT(*) AS nb_photos FROM photos WHERE id_album = :album_id'
-    );
-    $stmt->execute([':album_id' => $albumId]);
-    $result = $stmt->fetch();
-    return (int) ($result['nb_photos'] ?? 0);
-}
-
-// Modifier AdminController::photos() pour appeler Photo::countByAlbum() et transmettre la valeur $nbPhotos à la vue. Dans la vue, afficher le nombre de photos dans l'album à côté du titre, par exemple : "📷 Photos — Mariage de Alice et Bob (12 photos)".
-
-public function photos(): void {
-    $this->requireAdmin();
-    $albumId = (int) ($_GET['album_id'] ?? 0);
-    $albumModel = new Album();
-    $album = $albumModel->getById($albumId);
-    $nbPhotos = (new Photo())->countByAlbum($albumId);
-    $photos = (new Photo())->getByAlbum($albumId);
-    require 'views/admin/photos.php';
-}
-
-// Modifier la vue admin/photos.php pour afficher le nombre de photos dans l'album à côté du titre, par exemple : "📷 Photos — Mariage de Alice et Bob (12 photos)". Gérer le pluriel : '1 photo' sans s, '2 photos' avec s.
-
-    

@@ -89,14 +89,14 @@ class Album {
         $stmt = $this->pdo->prepare('DELETE FROM albums WHERE id = :id');
         return $stmt->execute([':id' => $id]);
     }
-}
 
-   // getNbPhotos : retourne le nombre de photos dans un album donné
+    // getNbPhotos : retourne le nombre de photos dans un album donné
     public function getNbPhotos(int $albumId): int {
         $stmt = $this->pdo->prepare(
-            'SELECT COUNT(*) AS nb_photos FROM photos WHERE album_id = :album_id'
+            'SELECT COUNT(*) AS nb_photos FROM photos WHERE id_album = :album_id'
         );
         $stmt->execute([':album_id' => $albumId]);
         $result = $stmt->fetch();
         return (int) ($result['nb_photos'] ?? 0);
     }
+}

@@ -12,8 +12,17 @@ class AdminController {
 
     // ── Albums ────────────────────────────────────────────────────
 
+    // Redirige vers la connexion si la session admin a expiré (au lieu d'une erreur)
+    private function redirectIfNotAdmin(): void {
+        if (empty($_SESSION['admin_id'])) {
+            $_SESSION['error'] = 'Votre session a expiré, veuillez vous reconnecter.';
+            header('Location: ?action=admin_login');
+            exit;
+        }
+    }
+
     public function albums(): void {
-        $this->requireAdmin();
+        $this->redirectIfNotAdmin();
         $albums = (new Album())->getAll(); // ✅ findAll() → getAll()
         require_once __DIR__ . '/../views/admin/albums.php';
     }
@@ -88,15 +97,6 @@ class AdminController {
         header('Location: ?action=admin_albums'); exit;
     }
 
- // getNbPhotos : retourne le nombre de photos dans un album donné 
-    
- $albumModel = new Album();
-    $albums = $albumModel->getAll();
-    foreach ($albums as $album) {
-        $nbPhotos = (new Album())->getNbPhotos($album['id']);
-        echo "Album ID: {$album['id']} - Nombre de photos: {$nbPhotos}<br>";
-    }
-
     // ── Photos ────────────────────────────────────────────────────
 
     public function photos(): void {
@@ -108,7 +108,8 @@ class AdminController {
             header('Location: ?action=admin_albums'); exit;
         }
 
-        $photos = (new Photo())->getByAlbum($albumId);
+        $photos   = (new Photo())->getByAlbum($albumId);
+        $nbPhotos = (new Photo())->countByAlbum($albumId);
         require_once __DIR__ . '/../views/admin/photos.php';
     }
 
@@ -209,14 +210,25 @@ class AdminController {
         $testimonials = $stmt->fetchAll();
         require_once __DIR__ . '/../views/admin/testimonials.php';
     }
-}
 
-// Ajouter la métohde AdminController::redirectlfNotAdmin(): void dans AdminController.php. Cette méthode vérifie si $_SESSION['admin_id] est vide. Si oui, elle stocke le message 'Votre session a expiré, veuillez vous reconnecter.' dans $_SESSION['error'] et redirige vers ?action=admin_login avec exit. Remplacer l'appel à requireAdmin() par redirectIfNotAdmin() dans la méthode albums() de AdminController.php. Cela permet de rediriger l'utilisateur vers la page de connexion si sa session a expiré, au lieu d'afficher une erreur 403.
-
-    private function redirectIfNotAdmin(): void {
-        if (empty($_SESSION['admin_id'])) {
-            $_SESSION['error'] = 'Votre session a expiré, veuillez vous reconnecter.';
-            header('Location: ?action=admin_login');
-            exit;
-        }
+    // Rend un témoignage visible sur le site public
+    public function approveTestimonial(): void {
+        $this->requireAdmin();
+        $id = (int) ($_GET['id'] ?? 0);
+        (new Database())->getConnection()
+            ->prepare('UPDATE testimonials SET approuve = 1 WHERE id = :id')
+            ->execute([':id' => $id]);
+        $_SESSION['success'] = 'Témoignage approuvé.';
+        header('Location: ?action=admin_testimonials'); exit;
     }
+
+    public function deleteTestimonial(): void {
+        $this->requireAdmin();
+        $id = (int) ($_GET['id'] ?? 0);
+        (new Database())->getConnection()
+            ->prepare('DELETE FROM testimonials WHERE id = :id')
+            ->execute([':id' => $id]);
+        $_SESSION['success'] = 'Témoignage supprimé.';
+        header('Location: ?action=admin_testimonials'); exit;
+    }
+}

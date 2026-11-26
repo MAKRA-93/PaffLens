@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . '/../layout/header.php'; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1>📷 Photos — <?= htmlspecialchars($album['titre']) ?></h1>
+  <h1>📷 Photos — <?= htmlspecialchars($album['titre']) ?> (<?= $nbPhotos ?> <?= $nbPhotos === 1 ? 'photo' : 'photos' ?>)</h1>
   <a href="?action=admin_albums" class="btn btn-outline-secondary">← Albums</a>
 </div>
 
@@ -54,7 +54,3 @@
 </div>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>
-
-<?php /* Modifier la vue views/admin/photos.php pour afficher le compteur dans le titre. Exemple de rendu attendu : "📷 Photos — Mariage de Alice et Bob (12 photos)". Gérer le pluriel : '1 photo' sans s, '2 photos' avec s. */ ?>
-
-<h1>📷 Photos — <?= htmlspecialchars($album['titre']) ?> (<?= $nbPhotos ?> <?= $nbPhotos === 1 ? 'photo' : 'photos' ?>)</h1>

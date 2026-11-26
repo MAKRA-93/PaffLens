@@ -1,5 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+// Les erreurs sont journalisées, jamais affichées au visiteur
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 error_reporting(E_ALL);
 ob_start();
 session_start();
@@ -96,6 +98,12 @@ switch ($action) {
     // ── Admin : Témoignages ───────────────────────────────────────
     case 'admin_testimonials':
         (new AdminController())->testimonials();
+        break;
+    case 'admin_testimonial_approve':
+        (new AdminController())->approveTestimonial();
+        break;
+    case 'admin_testimonial_delete':
+        (new AdminController())->deleteTestimonial();
         break;
 
     default:
